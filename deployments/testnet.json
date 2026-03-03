@@ -1,0 +1,13 @@
+{
+  "network": "Passet Hub Testnet",
+  "chainId": 420420417,
+  "rpc": "https://eth-rpc-testnet.polkadot.io/",
+  "explorer": "https://blockscout-testnet.polkadot.io",
+  "contracts": {
+    "RUSD":   "0xe321098307B309bAab006e8600439a1c948f0860",
+    "Oracle": "0x5A2B2C4750c1034d39f30441642C8Be220F52618",
+    "Vault":  "0xA3cc725D53D69Aa5e570D73390c152f76F7BC0CE"
+  },
+  "deployedAt": "2026-03-03",
+  "deployer": "0xB8E33ae09B968540cCD9b91a491Ed1cA89F7C64D"
+}

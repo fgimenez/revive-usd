@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Job 1: unit + integration + invariant tests (Anvil/EVM, no network)
+  # -----------------------------------------------------------------------
+  test:
+    name: Forge tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install foundry-polkadot
+        run: |
+          curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
+          source ~/.bashrc
+          foundryup-polkadot
+
+      - name: Add foundry to PATH
+        run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+
+      - name: Build (resolc)
+        run: forge build --resolc
+
+      - name: Run unit & integration tests
+        run: forge test --no-match-test "invariant_" -v
+
+      - name: Run invariant tests
+        run: forge test --match-test "invariant_" --fuzz-runs 10000 -v
+
+  # -----------------------------------------------------------------------
+  # Job 2: live smoke test against Passet Hub testnet
+  # Runs only on pushes to main (not PRs) to conserve testnet PAS.
+  # Requires secret: DEPLOYER_PK (private key with testnet PAS balance)
+  # -----------------------------------------------------------------------
+  testnet-smoke:
+    name: Testnet smoke test
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: testnet
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install foundry-polkadot
+        run: |
+          curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
+          source ~/.bashrc
+          foundryup-polkadot
+
+      - name: Add foundry to PATH
+        run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+
+      - name: Build (resolc)
+        run: forge build --resolc
+
+      - name: Verify static contract state
+        run: |
+          cast call 0xe321098307B309bAab006e8600439a1c948f0860 "vault()(address)" \
+            --rpc-url https://eth-rpc-testnet.polkadot.io/
+          cast call 0x5A2B2C4750c1034d39f30441642C8Be220F52618 "getPrice()(uint256)" \
+            --rpc-url https://eth-rpc-testnet.polkadot.io/
+          cast call 0xA3cc725D53D69Aa5e570D73390c152f76F7BC0CE "MIN_RATIO()(uint256)" \
+            --rpc-url https://eth-rpc-testnet.polkadot.io/
+
+      - name: Run lifecycle smoke test
+        env:
+          PRIVATE_KEY: ${{ secrets.DEPLOYER_PK }}
+        run: |
+          forge script script/SmokeTest.s.sol \
+            --resolc \
+            --rpc-url https://eth-rpc-testnet.polkadot.io/ \
+            --private-key $PRIVATE_KEY \
+            --broadcast

@@ -1,0 +1,22 @@
+# Foundry
+out/
+cache/
+broadcast/
+
+# Secrets — never commit private keys
+pk.txt
+.env
+*.pem
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+
+# Claude Code
+.claude/
+CLAUDE.md
+DEVELOPMENT.md
+IDEAS.md
+
+# OS
+.DS_Store
