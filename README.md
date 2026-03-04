@@ -19,7 +19,6 @@ It is a **Collateralized Debt Position (CDP)** protocol — the model pioneered 
 - Polkadot Hub has no decentralized stablecoin today. rUSD is a first step toward that.
 - A stablecoin unlocks the rest of DeFi: lending, DEXs, yield strategies — all need a stable unit of account.
 - Using native PAS as collateral ties rUSD's value directly to the Polkadot Hub economy, rather than importing risk from another chain.
-- The entire stack — contracts, frontend, CI/CD, testnet smoke tests — is built and running, not prototyped.
 
 ---
 
