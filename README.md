@@ -63,6 +63,72 @@ User deposits PAS → opens a Vault position
 
 ---
 
+## Screenshots
+
+**Wallet connected to Passet Hub Testnet (Chain ID 420420417)**
+
+Rabby wallet showing a real PAS balance on the custom network, confirming the app runs on Polkadot's asset hub — not a standard EVM chain.
+
+![Wallet connected to Passet Hub](assets/hack_1.png)
+
+---
+
+**Dashboard — live protocol stats**
+
+The dashboard shows the current PAS/USD oracle price, total rUSD supply, and the accrued stability fee since deployment. The wallet address is visible in the top-right corner.
+
+![Dashboard](assets/hack_2.png)
+
+---
+
+**Vault — before opening a position**
+
+A freshly connected wallet with no active vault. The collateral ratio meter shows ∞ (no debt), and the wallet balance of ~5000 PAS is displayed.
+
+![Vault before opening](assets/hack_3.png)
+
+---
+
+**Vault — entering collateral amount**
+
+The user has entered 10 PAS as collateral and is about to open a new CDP position by clicking Open.
+
+![Vault with amount filled](assets/hack_4.png)
+
+---
+
+**Rabby transaction confirmation**
+
+Rabby shows the raw transaction being sent to the Vault contract on Passet Hub Testnet — chain ID 420420417, value of 10 PAS, gas estimated at ~2.4 PAS.
+
+![Rabby transaction](assets/hack_5.png)
+
+---
+
+**Vault — active position with 10 PAS collateral**
+
+After the transaction confirms, the vault shows 10 PAS collateral, 0 rUSD debt, a $5.00 PAS price, and 33.33 rUSD available to mint. The Debt section with Mint/Burn buttons is now visible. Collateral ratio is ∞ (no debt outstanding).
+
+![Vault active position](assets/hack_6.png)
+
+---
+
+**Liquidations — healthy protocol**
+
+No positions are below the 130% liquidation threshold. The page is functional and ready to surface undercollateralized vaults when they appear.
+
+![Liquidations page](assets/hack_7.png)
+
+---
+
+**Blockscout — Vault contract on testnet**
+
+The Vault contract on Blockscout with 37 transactions. The most recent is the `open()` call from the user's wallet (0xcB...64Db), confirmed successfully 11 minutes ago with 10 PAS sent as collateral.
+
+![Blockscout Vault contract](assets/hack_8.png)
+
+---
+
 ## Architecture
 
 ```
