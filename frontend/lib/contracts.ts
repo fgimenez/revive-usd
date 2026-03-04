@@ -1,18 +1,25 @@
 import { RUSD_ABI, ORACLE_ABI, VAULT_ABI } from './abis'
+import testnet from '../../deployments/testnet.json'
+
+const deployments = { testnet } as const
+type Network = keyof typeof deployments
+
+const network = (process.env.NEXT_PUBLIC_NETWORK ?? 'testnet') as Network
+const deployment = deployments[network] ?? deployments.testnet
 
 export const CONTRACTS = {
   RUSD: {
-    address: '0xe321098307B309bAab006e8600439a1c948f0860' as `0x${string}`,
+    address: deployment.contracts.RUSD as `0x${string}`,
     abi: RUSD_ABI,
   },
   Oracle: {
-    address: '0x5A2B2C4750c1034d39f30441642C8Be220F52618' as `0x${string}`,
+    address: deployment.contracts.Oracle as `0x${string}`,
     abi: ORACLE_ABI,
   },
   Vault: {
-    address: '0xA3cc725D53D69Aa5e570D73390c152f76F7BC0CE' as `0x${string}`,
+    address: deployment.contracts.Vault as `0x${string}`,
     abi: VAULT_ABI,
   },
 } as const
 
-export const EXPLORER = 'https://blockscout-testnet.polkadot.io'
+export const EXPLORER = deployment.explorer
