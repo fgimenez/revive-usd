@@ -20,8 +20,9 @@ jobs:
       - name: Install foundry-polkadot
         run: |
           curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
-          $HOME/.foundry/bin/foundryup-polkadot
-          echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+          FOUNDRYUP=$(find "$HOME" -name "foundryup-polkadot" -type f 2>/dev/null | head -1)
+          "$FOUNDRYUP"
+          echo "$(dirname "$FOUNDRYUP")" >> $GITHUB_PATH
 
       - name: Build (resolc)
         run: forge build --resolc
@@ -52,8 +53,9 @@ jobs:
       - name: Install foundry-polkadot
         run: |
           curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
-          $HOME/.foundry/bin/foundryup-polkadot
-          echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+          FOUNDRYUP=$(find "$HOME" -name "foundryup-polkadot" -type f 2>/dev/null | head -1)
+          "$FOUNDRYUP"
+          echo "$(dirname "$FOUNDRYUP")" >> $GITHUB_PATH
 
       - name: Build (resolc)
         run: forge build --resolc
