@@ -1,6 +1,6 @@
 # ReviveUSD
 
-**The first CDP stablecoin protocol on Polkadot Hub.**
+**A CDP stablecoin protocol built natively on Polkadot Hub's EVM layer.**
 
 Lock native PAS as collateral, mint **rUSD** — a USD-pegged stablecoin — and manage your position through a clean web UI. Deployed live on Passet Hub testnet.
 
@@ -18,7 +18,7 @@ It is a **Collateralized Debt Position (CDP)** protocol — the model pioneered 
 
 **Why this matters for the ecosystem:**
 
-- Polkadot Hub has no decentralized stablecoin today. rUSD is a first step toward that.
+- Polkadot Hub's EVM layer (`pallet-revive`) is new ground — DeFi primitives like CDP stablecoins are only beginning to emerge there.
 - A stablecoin unlocks the rest of DeFi: lending, DEXs, yield strategies — all need a stable unit of account.
 - Using native PAS as collateral ties rUSD's value directly to the Polkadot Hub economy, rather than importing risk from another chain.
 
