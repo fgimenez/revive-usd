@@ -34,7 +34,34 @@ jobs:
         run: forge test --match-test "invariant_" --fuzz-runs 10000 -v
 
   # -----------------------------------------------------------------------
-  # Job 2: live smoke test against Passet Hub testnet
+  # Job 2: Playwright E2E tests (Next.js frontend, no testnet required)
+  # -----------------------------------------------------------------------
+  e2e:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: Install Chromium system dependencies
+        run: bash ../script/install_chromium_deps.sh
+
+      - run: npx playwright install chromium
+
+      - run: npm run test:e2e
+
+  # -----------------------------------------------------------------------
+  # Job 3: live smoke test against Passet Hub testnet
   # Runs only on pushes to main (not PRs) to conserve testnet PAS.
   # Requires secret: DEPLOYER_PK (private key with testnet PAS balance)
   # -----------------------------------------------------------------------
