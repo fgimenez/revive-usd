@@ -8,6 +8,23 @@ Built for the [Polkadot Solidity Hackathon 2026](https://dorahacks.io/hackathon/
 
 ---
 
+## Overview
+
+Polkadot Hub is bringing serious DeFi liquidity to the ecosystem, but it arrives without a native stablecoin. ReviveUSD fills that gap.
+
+It is a **Collateralized Debt Position (CDP)** protocol — the model pioneered by MakerDAO — reimplemented from scratch in Solidity and compiled to **PolkaVM** via `resolc`. Users deposit native PAS tokens as collateral and mint **rUSD**, a soft-pegged USD stablecoin backed entirely on-chain. No bridges, no wrapped tokens, no off-chain dependencies.
+
+The name is a deliberate nod to `pallet-revive`, the Polkadot module that makes this possible: it *revives* EVM-style smart contracts on a RISC-V runtime, and it *revives* the idea that Polkadot can host credible, production-grade DeFi primitives.
+
+**Why this matters for the ecosystem:**
+
+- Polkadot Hub has no decentralized stablecoin today. rUSD is a first step toward that.
+- A stablecoin unlocks the rest of DeFi: lending, DEXs, yield strategies — all need a stable unit of account.
+- Using native PAS as collateral ties rUSD's value directly to the Polkadot Hub economy, rather than importing risk from another chain.
+- The entire stack — contracts, frontend, CI/CD, testnet smoke tests — is built and running, not prototyped.
+
+---
+
 ## Live Deployment (Passet Hub Testnet)
 
 | Contract | Address |
