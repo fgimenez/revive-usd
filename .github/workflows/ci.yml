@@ -72,9 +72,4 @@ jobs:
       - name: Run lifecycle smoke test
         env:
           PRIVATE_KEY: ${{ secrets.DEPLOYER_PK }}
-        run: |
-          forge script script/SmokeTest.s.sol \
-            --resolc \
-            --rpc-url https://eth-rpc-testnet.polkadot.io/ \
-            --private-key $PRIVATE_KEY \
-            --broadcast
+        run: bash script/smoke_test.sh
