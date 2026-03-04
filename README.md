@@ -129,6 +129,38 @@ The Vault contract on Blockscout with 37 transactions. The most recent is the `o
 
 ---
 
+**Vault — entering rUSD mint amount**
+
+With an active position open, the user enters 10 rUSD in the Debt section (within the 33.33 rUSD max mintable limit) and is about to click Mint rUSD.
+
+![Vault mint amount](assets/hack_9.png)
+
+---
+
+**Rabby confirmation — mint rUSD transaction**
+
+Rabby shows the `mint()` call being sent to the Vault contract on Passet Hub Testnet. Gas estimated at ~2.4 PAS.
+
+![Rabby mint confirmation](assets/hack_10.png)
+
+---
+
+**Vault — after minting 10 rUSD**
+
+The position now shows 10 rUSD debt, a collateral ratio of 499% (well above the 150% minimum), and max mintable reduced to 23.33 rUSD. The Burn rUSD button is now actionable.
+
+![Vault after minting](assets/hack_11.png)
+
+---
+
+**Dashboard — updated protocol state**
+
+After minting, the dashboard reflects the on-chain state: rUSD supply is now 10 rUSD and the accrued stability fee has ticked up to 0.0137% since deployment.
+
+![Dashboard updated](assets/hack_12.png)
+
+---
+
 ## Architecture
 
 ```
