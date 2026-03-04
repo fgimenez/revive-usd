@@ -4,7 +4,7 @@
 
 Lock native PAS as collateral, mint **rUSD** — a USD-pegged stablecoin — and manage your position through a clean web UI. Deployed live on Passet Hub testnet.
 
-**[https://revive-usd.vercel.app](https://revive-usd.vercel.app)**
+**Live app: [revive-usd.vercel.app](https://revive-usd.vercel.app)** — connect a wallet configured for Passet Hub Testnet (Chain ID `420420417`) to interact with the deployed contracts. Testnet PAS available from the [faucet](https://faucet.polkadot.io/?parachain=1111).
 
 Built for the [Polkadot Solidity Hackathon 2026](https://dorahacks.io/hackathon/polkadot-solidity-hackathon/detail) · EVM Smart Contracts track.
 
