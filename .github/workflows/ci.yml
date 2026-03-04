@@ -21,7 +21,7 @@ jobs:
         run: |
           curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
           FOUNDRYUP=$(find "$HOME" -name "foundryup-polkadot" -type f 2>/dev/null | head -1)
-          "$FOUNDRYUP"
+          "$FOUNDRYUP" --force
           echo "$(dirname "$FOUNDRYUP")" >> $GITHUB_PATH
 
       - name: Build (resolc)
@@ -54,7 +54,7 @@ jobs:
         run: |
           curl -L https://raw.githubusercontent.com/paritytech/foundry-polkadot/refs/heads/master/foundryup/install | bash
           FOUNDRYUP=$(find "$HOME" -name "foundryup-polkadot" -type f 2>/dev/null | head -1)
-          "$FOUNDRYUP"
+          "$FOUNDRYUP" --force
           echo "$(dirname "$FOUNDRYUP")" >> $GITHUB_PATH
 
       - name: Build (resolc)
