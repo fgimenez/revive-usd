@@ -14,8 +14,6 @@ Polkadot Hub is bringing serious DeFi liquidity to the ecosystem, but it arrives
 
 It is a **Collateralized Debt Position (CDP)** protocol — the model pioneered by MakerDAO — reimplemented from scratch in Solidity and compiled to **PolkaVM** via `resolc`. Users deposit native PAS tokens as collateral and mint **rUSD**, a soft-pegged USD stablecoin backed entirely on-chain. No bridges, no wrapped tokens, no off-chain dependencies.
 
-The name is a deliberate nod to `pallet-revive`, the Polkadot module that makes this possible: it *revives* EVM-style smart contracts on a RISC-V runtime, and it *revives* the idea that Polkadot can host credible, production-grade DeFi primitives.
-
 **Why this matters for the ecosystem:**
 
 - Polkadot Hub has no decentralized stablecoin today. rUSD is a first step toward that.
