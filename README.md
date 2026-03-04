@@ -4,6 +4,8 @@
 
 Lock native PAS as collateral, mint **rUSD** — a USD-pegged stablecoin — and manage your position through a clean web UI. Deployed live on Passet Hub testnet.
 
+**[https://revive-usd.vercel.app](https://revive-usd.vercel.app)**
+
 Built for the [Polkadot Solidity Hackathon 2026](https://dorahacks.io/hackathon/polkadot-solidity-hackathon/detail) · EVM Smart Contracts track.
 
 ---
@@ -278,7 +280,7 @@ cast send <RUSD_ADDR> "setVault(address)" <VAULT_ADDR> --rpc-url $RPC --private-
 - [ ] Decentralized oracle (Chainlink / DIA once available on Passet Hub)
 - [ ] Governance token and on-chain parameter voting
 - [ ] XCM integration: accept DOT and other parachain assets as collateral
-- [ ] Frontend hosted deployment
+- [x] Frontend hosted deployment — [revive-usd.vercel.app](https://revive-usd.vercel.app)
 - [ ] Audit
 
 ---
