@@ -46,6 +46,9 @@ function jsonRpc(id: unknown, result: unknown) {
 }
 
 export async function mockRpc(page: Page) {
+  // When REAL_RPC=1 let requests through to the live testnet (used by test:e2e:testnet)
+  if (process.env.REAL_RPC) return
+
   await page.route(RPC_URL, async (route: Route) => {
     const body = route.request().postDataJSON() as { method: string; id: unknown; params?: unknown[] }
     const { method, id } = body

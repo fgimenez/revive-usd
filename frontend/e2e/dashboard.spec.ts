@@ -12,6 +12,7 @@ test('renders heading and description', async ({ page }) => {
 })
 
 test('shows oracle price from mock', async ({ page }) => {
+  test.skip(!!process.env.REAL_RPC, 'asserts mock-specific value $5.00')
   await page.goto('/')
   // Oracle.getPrice() mock returns 5e18 → $5.00
   await expect(page.getByText('$5.00')).toBeVisible()

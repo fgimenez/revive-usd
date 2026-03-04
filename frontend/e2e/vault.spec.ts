@@ -33,6 +33,7 @@ test('connected: shows collateral and debt stat cards', async ({ page }) => {
 })
 
 test('connected with position: shows Debt section with Mint/Burn buttons', async ({ page }) => {
+  test.skip(!!process.env.REAL_RPC, 'depends on mock positions() returning collateral > 0')
   // mock returns positions(addr) = (1e18, 3e17, 1e27) → collateral=1e18 > 0 → hasPos=true
   await injectWallet(page, TEST_ADDRESS)
   await setWagmiConnected(page, TEST_ADDRESS)
@@ -45,6 +46,7 @@ test('connected with position: shows Debt section with Mint/Burn buttons', async
 })
 
 test('connected with position: shows Deposit/Withdraw/Close buttons', async ({ page }) => {
+  test.skip(!!process.env.REAL_RPC, 'depends on mock positions() returning collateral > 0')
   await injectWallet(page, TEST_ADDRESS)
   await setWagmiConnected(page, TEST_ADDRESS)
   await page.goto('/vault')
