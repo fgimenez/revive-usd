@@ -83,7 +83,7 @@ The dashboard shows the current PAS/USD oracle price, total rUSD supply, and the
 
 **Vault — before opening a position**
 
-A freshly connected wallet with no active vault. The collateral ratio meter shows ∞ (no debt yet), and the Open button is ready to accept a collateral deposit.
+A freshly connected wallet with no active vault. The collateral ratio meter shows ∞ (no debt), and the wallet balance of ~5000 PAS is displayed.
 
 ![Vault before opening](assets/hack_3.png)
 
