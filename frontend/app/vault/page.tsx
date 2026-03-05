@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAccount, useReadContracts, useWriteContract, useWaitForTransactionReceipt, useBalance } from 'wagmi'
 import { parseEther, formatEther } from 'viem'
 import { CONTRACTS } from '@/lib/contracts'
@@ -46,7 +46,7 @@ export default function VaultPage() {
   const [txHash, setTxHash] = useState<`0x${string}` | undefined>()
 
   const { writeContract, isPending } = useWriteContract()
-  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash: txHash })
+  const { isLoading: isConfirming, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({ hash: txHash })
 
   const loading = isPending || isConfirming
 
@@ -71,39 +71,38 @@ export default function VaultPage() {
   const collateral = pos?.[0] ?? 0n
   const hasPos     = collateral > 0n
 
-  const send = (fn: () => void) => {
-    fn()
-    setTimeout(refetch, 3000)
-  }
+  useEffect(() => {
+    if (isTxSuccess) refetch()
+  }, [isTxSuccess])
 
-  const open = () => send(() => writeContract({
+  const open = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'open',
     value: parseEther(colInput || '0'),
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
-  const deposit = () => send(() => writeContract({
+  const deposit = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'deposit',
     value: parseEther(colInput || '0'),
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
-  const withdraw = () => send(() => writeContract({
+  const withdraw = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'withdraw',
     args: [parseEther(colInput || '0')],
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
-  const mint = () => send(() => writeContract({
+  const mint = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'mint',
     args: [parseEther(debtInput || '0')],
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
-  const burn = () => send(() => writeContract({
+  const burn = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'burn',
     args: [parseEther(debtInput || '0')],
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
-  const close = () => send(() => writeContract({
+  const close = () => writeContract({
     ...CONTRACTS.Vault, functionName: 'close',
-  }, { onSuccess: h => setTxHash(h) }))
+  }, { onSuccess: h => setTxHash(h) })
 
   if (!address) {
     return (
