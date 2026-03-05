@@ -27,6 +27,11 @@ export async function injectWallet(page: Page, address: string) {
         if (method === 'net_version') return '420420417'
         if (method === 'wallet_switchEthereumChain') return null
         if (method === 'wallet_addEthereumChain') return null
+        if (method === 'eth_sendTransaction') {
+          const failMsg = (window as Window & { __mockWalletShouldFail?: string }).__mockWalletShouldFail
+          if (failMsg) throw new Error(failMsg)
+          return '0x' + 'a'.repeat(64) // fake tx hash
+        }
         return null
       },
       on: (event: string, handler: (...args: unknown[]) => void) => {

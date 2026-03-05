@@ -88,7 +88,7 @@ export default function VaultPage() {
 
   const callbacks = (onSuccess: (h: `0x${string}`) => void) => ({
     onSuccess,
-    onError: (e: Error) => setTxError(e.message.split('\n')[0] || 'Transaction failed'),
+    onError: (e: Error) => setTxError(e.shortMessage || e.message.split('\n')[0] || 'Transaction failed'),
   })
 
   const open     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'open',     value: parseEther(colInput  || '0') },                          callbacks(h => setTxHash(h))) }
