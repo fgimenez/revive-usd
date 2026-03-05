@@ -45,6 +45,7 @@ export default function VaultPage() {
   const [debtInput, setDebtInput] = useState('')
   const [txHash, setTxHash] = useState<`0x${string}` | undefined>()
 
+  const [txError, setTxError] = useState<string | null>(null)
   const { writeContract, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({ hash: txHash })
 
@@ -72,37 +73,20 @@ export default function VaultPage() {
   const hasPos     = collateral > 0n
 
   useEffect(() => {
-    if (isTxSuccess) refetch()
+    if (isTxSuccess) { setTxError(null); refetch() }
   }, [isTxSuccess])
 
-  const open = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'open',
-    value: parseEther(colInput || '0'),
-  }, { onSuccess: h => setTxHash(h) })
+  const callbacks = (onSuccess: (h: `0x${string}`) => void) => ({
+    onSuccess,
+    onError: (e: Error) => setTxError(e.message.split('\n')[0]),
+  })
 
-  const deposit = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'deposit',
-    value: parseEther(colInput || '0'),
-  }, { onSuccess: h => setTxHash(h) })
-
-  const withdraw = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'withdraw',
-    args: [parseEther(colInput || '0')],
-  }, { onSuccess: h => setTxHash(h) })
-
-  const mint = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'mint',
-    args: [parseEther(debtInput || '0')],
-  }, { onSuccess: h => setTxHash(h) })
-
-  const burn = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'burn',
-    args: [parseEther(debtInput || '0')],
-  }, { onSuccess: h => setTxHash(h) })
-
-  const close = () => writeContract({
-    ...CONTRACTS.Vault, functionName: 'close',
-  }, { onSuccess: h => setTxHash(h) })
+  const open     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'open',     value: parseEther(colInput  || '0') },                          callbacks(h => setTxHash(h))) }
+  const deposit  = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'deposit',  value: parseEther(colInput  || '0') },                          callbacks(h => setTxHash(h))) }
+  const withdraw = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'withdraw', args:  [parseEther(colInput  || '0')] },                         callbacks(h => setTxHash(h))) }
+  const mint     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'mint',     args:  [parseEther(debtInput || '0')] },                         callbacks(h => setTxHash(h))) }
+  const burn     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'burn',     args:  [parseEther(debtInput || '0')] },                         callbacks(h => setTxHash(h))) }
+  const close    = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'close' },                                                                   callbacks(h => setTxHash(h))) }
 
   if (!address) {
     return (
@@ -174,6 +158,12 @@ export default function VaultPage() {
             <ActionButton label="Mint rUSD" onClick={mint} disabled={!debtInput} loading={loading} />
             <ActionButton label="Burn rUSD" onClick={burn} disabled={!debtInput} loading={loading} />
           </div>
+        </div>
+      )}
+
+      {txError && (
+        <div className="bg-red-900/40 border border-red-700 rounded-xl px-4 py-3 text-sm text-red-300">
+          {txError}
         </div>
       )}
     </div>
