@@ -47,7 +47,7 @@ export default function VaultPage() {
 
   const [txError, setTxError] = useState<string | null>(null)
   const { writeContract, isPending } = useWriteContract()
-  const { isLoading: isConfirming, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({ hash: txHash })
+  const { isLoading: isConfirming, data: txReceipt } = useWaitForTransactionReceipt({ hash: txHash })
 
   const loading = isPending || isConfirming
 
@@ -73,8 +73,14 @@ export default function VaultPage() {
   const hasPos     = collateral > 0n
 
   useEffect(() => {
-    if (isTxSuccess) { setTxError(null); refetch() }
-  }, [isTxSuccess])
+    if (!txReceipt) return
+    if (txReceipt.status === 'reverted') {
+      setTxError('Transaction reverted — check collateral ratio and debt constraints')
+    } else {
+      setTxError(null)
+      refetch()
+    }
+  }, [txReceipt])
 
   const callbacks = (onSuccess: (h: `0x${string}`) => void) => ({
     onSuccess,
