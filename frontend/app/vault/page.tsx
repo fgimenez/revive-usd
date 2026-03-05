@@ -46,12 +46,8 @@ export default function VaultPage() {
   const [txHash, setTxHash] = useState<`0x${string}` | undefined>()
 
   const [txError, setTxError] = useState<string | null>(null)
-  const { writeContract, isPending, error: writeError } = useWriteContract()
+  const { writeContractAsync, isPending } = useWriteContract()
   const { isLoading: isConfirming, data: txReceipt } = useWaitForTransactionReceipt({ hash: txHash })
-
-  useEffect(() => {
-    if (writeError) setTxError(writeError.message.split('\n')[0] || 'Transaction failed')
-  }, [writeError])
 
   const loading = isPending || isConfirming
 
@@ -86,17 +82,24 @@ export default function VaultPage() {
     }
   }, [txReceipt])
 
-  const callbacks = (onSuccess: (h: `0x${string}`) => void) => ({
-    onSuccess,
-    onError: (e: Error & { shortMessage?: string }) => setTxError(e.shortMessage || e.message.split('\n')[0] || 'Transaction failed'),
-  })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const send = async (params: any) => {
+    setTxError(null)
+    try {
+      const hash = await writeContractAsync(params)
+      setTxHash(hash)
+    } catch (e: unknown) {
+      const err = e as Error & { shortMessage?: string }
+      setTxError(err.shortMessage || err.message.split('\n')[0] || 'Transaction failed')
+    }
+  }
 
-  const open     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'open',     value: parseEther(colInput  || '0') },                          callbacks(h => setTxHash(h))) }
-  const deposit  = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'deposit',  value: parseEther(colInput  || '0') },                          callbacks(h => setTxHash(h))) }
-  const withdraw = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'withdraw', args:  [parseEther(colInput  || '0')] },                         callbacks(h => setTxHash(h))) }
-  const mint     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'mint',     args:  [parseEther(debtInput || '0')] },                         callbacks(h => setTxHash(h))) }
-  const burn     = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'burn',     args:  [parseEther(debtInput || '0')] },                         callbacks(h => setTxHash(h))) }
-  const close    = () => { setTxError(null); writeContract({ ...CONTRACTS.Vault, functionName: 'close' },                                                                   callbacks(h => setTxHash(h))) }
+  const open     = () => send({ ...CONTRACTS.Vault, functionName: 'open',     value: parseEther(colInput  || '0') })
+  const deposit  = () => send({ ...CONTRACTS.Vault, functionName: 'deposit',  value: parseEther(colInput  || '0') })
+  const withdraw = () => send({ ...CONTRACTS.Vault, functionName: 'withdraw', args:  [parseEther(colInput  || '0')] })
+  const mint     = () => send({ ...CONTRACTS.Vault, functionName: 'mint',     args:  [parseEther(debtInput || '0')] })
+  const burn     = () => send({ ...CONTRACTS.Vault, functionName: 'burn',     args:  [parseEther(debtInput || '0')] })
+  const close    = () => send({ ...CONTRACTS.Vault, functionName: 'close' })
 
   if (!address) {
     return (
