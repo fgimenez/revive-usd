@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { useAccount, useReadContracts, useWriteContract, useWaitForTransactionReceipt, useBalance } from 'wagmi'
+import { simulateContract } from '@wagmi/core'
 import { parseEther, formatEther } from 'viem'
 import { CONTRACTS } from '@/lib/contracts'
+import { wagmiConfig } from '@/lib/wagmi'
 import { RatioMeter } from '@/components/RatioMeter'
 
 function Input({ label, value, onChange, placeholder, unit }: {
@@ -86,6 +88,7 @@ export default function VaultPage() {
   const send = async (params: any) => {
     setTxError(null)
     try {
+      await simulateContract(wagmiConfig, params)
       const hash = await writeContractAsync(params)
       setTxHash(hash)
     } catch (e: unknown) {
