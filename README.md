@@ -190,7 +190,7 @@ This project is compiled to **PolkaVM** (RISC-V bytecode) via `resolc`, the Soli
 Key differences leveraged:
 - `--resolc` flag compiles Solidity through Yul → LLVM → RISC-V, enabling native execution in `pallet-revive`
 - Native PAS (Polkadot's asset hub token) as collateral — no wrapped token needed
-- Deterministic finality (~1 min) vs probabilistic on rollups
+- Fast deterministic finality (~1 min) vs minutes-to-days settlement on rollups
 
 ---
 
